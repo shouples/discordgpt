@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "wranglergpt"
+version = "0.1.0"
+description = ""
+authors = ["Dave Shoup <dave.shoup@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "discordgpt" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+"discord.py" = "^2.3.2"
+openai = "^1.6.1"
+structlog = "^23.3.0"
+pydantic-settings = "^2.1.0"
+aiohttp = "^3.9.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.12.1"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+ipykernel = "^6.28.0"
+jupyter = "^1.0.0"
+rich = "^13.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
