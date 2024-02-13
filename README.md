@@ -1,11 +1,13 @@
-![](https://cdn.discordapp.com/avatars/411652972955828224/335a79c8f4f37936618110ae535eb2b6.png?size=256)
+Exploring the Discord API with [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html) and the OpenAI API.
 
-https://discord.com/developers/applications/
+# Setup
+- Create a Discord bot app here: https://discord.com/developers/applications/
+- Create (or use an existing) [OpenAI API key](https://platform.openai.com/account/api-keys)
+- Configure `.env` locally (example)
+- Adjust `initial_prompt.md` as needed
+- `poetry run python ./discordgpt/app.py`
 
-Resources:
-- https://discordpy.readthedocs.io/en/stable/intro.html
-
-TODO:
+# TODO items
 - [ ] switch from ChatCompletion to the Assistants API; each server in its own thread with `channel:username` as the message `name` values
   - [ ] store `channel-username: threadid` mappings locally; if no thread ID exists, create thread and carry over last (up to) 10 messages in history
 - [X] load attached images through https://platform.openai.com/docs/guides/vision
