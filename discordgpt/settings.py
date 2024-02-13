@@ -1,17 +1,18 @@
+import os
 from functools import lru_cache
 
-from pydantic import SecretStr
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DISCORDGPT_TOKEN: SecretStr = SecretStr("")
-    DISCORDGPT_NAME: str = ""
+    DISCORD_BOT_TOKEN: SecretStr = SecretStr("")
+    DISCORD_BOT_NAME: str = ""
 
     OPENAI_API_KEY: str = ""
 
     OPENAI_MODEL: str = ""
-    OPENAI_STARTING_PROMPT: str = ""
+    OPENAI_STARTING_PROMPT: str | list[str] = ""
 
     # required for summarizing image attachments
     OPENAI_VISION_MODEL: str = ""
@@ -26,10 +27,26 @@ class Settings(BaseSettings):
     # will reply to any message in a TextChannel
     RANDOM_REPLY_CHANCE: float = 0.05
 
+    # comma-separated list of usernames to ignore messages from
+    IGNORE_SENDER_NAMES: str | list[str] = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
     )
+
+    @field_validator("IGNORE_SENDER_NAMES", mode="before")
+    @classmethod
+    def validate_IGNORE_SENDER_NAMES(cls, v: str | list[str]) -> list[str]:
+        if isinstance(v, str):
+            # don't replace spaces so we don't accidentally mess up a username
+            v = [name.strip() for name in v.split(",")]
+        return v
+
+    @field_validator("OPENAI_STARTING_PROMPT", mode="before")
+    @classmethod
+    def validate_OPENAI_STARTING_PROMPT(cls, v: str | list[str]) -> str:
+        return open("initial_prompt.md").read().strip()
 
 
 @lru_cache
