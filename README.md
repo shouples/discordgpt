@@ -14,5 +14,10 @@ Exploring the Discord API with [discord.py](https://discordpy.readthedocs.io/en/
 - [ ] add function calling for:
   - [X] image generation with https://platform.openai.com/docs/guides/images/usage?context=node
   - [X] adding reactions to messages, either with unicode emojis or with server-specific reactions
-  - [ ] making external API requests
+  - [ ] making external API requests / web browsing
+
+# Longer-term fun goals
 - [ ] explore usage with local models capable of using similar function calling methods
+- [ ] voice channel support
+  - [ ] load user audio https://platform.openai.com/docs/guides/speech-to-text
+  - [ ] emit bot audio https://platform.openai.com/docs/guides/text-to-speech
