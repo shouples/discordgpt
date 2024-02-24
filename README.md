@@ -19,6 +19,12 @@ This is mainly used for toying around with a bot user in a single server. I have
   - [ ] making external API requests / web browsing
 - [ ] handle multi-server bots and settings
 
+# Shorter-term fun goals
+- [ ] Docker build with helm deployment
+- [ ] Feedback loop based on 👍👎 reactions to bot messages
+  - [ ] Persistent storage
+- [ ] Web UI for monitoring context window and some basic overrides/commands
+
 # Longer-term fun goals
 - [ ] explore usage with local models capable of using similar function calling methods
 - [ ] voice channel support
