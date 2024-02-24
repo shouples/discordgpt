@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "wranglergpt"
+name = "discordgpt"
 version = "0.1.0"
 description = ""
 authors = ["Dave Shoup <dave.shoup@gmail.com>"]
@@ -21,6 +21,7 @@ flake8 = "^7.0.0"
 ipykernel = "^6.28.0"
 jupyter = "^1.0.0"
 rich = "^13.7.0"
+click = "^8.1.7"
 
 [build-system]
 requires = ["poetry-core"]
