@@ -8,6 +8,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     DISCORD_BOT_TOKEN: SecretStr = SecretStr("")
     DISCORD_BOT_NAME: str = ""
+    CLIENT_USER_ID: str = ""
 
     OPENAI_API_KEY: str = ""
 
@@ -26,6 +27,11 @@ class Settings(BaseSettings):
     # if this is greater than 0.0, for any server this bot is in, there is a chance that the bot
     # will reply to any message in a TextChannel
     RANDOM_REPLY_CHANCE: float = 0.05
+    # ...or react to a message with an emoji or server reaction
+    RANDOM_REACTION_CHANCE: float = 0.05
+
+    # comma-separated list of usernames to ignore messages from
+    IGNORE_SENDER_NAMES: str | list[str] = ""
 
     # comma-separated list of usernames to ignore messages from
     IGNORE_SENDER_NAMES: str | list[str] = ""
@@ -46,6 +52,8 @@ class Settings(BaseSettings):
     @field_validator("OPENAI_STARTING_PROMPT", mode="before")
     @classmethod
     def validate_OPENAI_STARTING_PROMPT(cls, v: str | list[str]) -> str:
+        # multi-line strings don't load well from .env files, so we load directly from a separate
+        # file instead
         return open("initial_prompt.md").read().strip()
 
 
