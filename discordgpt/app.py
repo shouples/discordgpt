@@ -1,8 +1,8 @@
 import structlog
-from discord import DMChannel, Message, TextChannel
-from rich import print as rprint
+from discord import DMChannel, Message, RawReactionActionEvent, TextChannel
 
 from discordgpt.client import client
+from discordgpt.feedback import handle_reaction
 from discordgpt.messaging.direct_message_channel import handle_direct_message
 from discordgpt.messaging.text_channel import handle_text_channel_message
 from discordgpt.settings import get_settings
@@ -25,6 +25,10 @@ def set_log_contextvars(message: Message) -> None:
 @client.event
 async def on_ready():
     logger.info(f"Logged in as {client.user}")
+
+    # used later for the initial system prompt to the OpenAI API so the model can "know"
+    # when it's been mentioned or referenced in a message, rather than treating `<@!123456789>` as
+    # some other user's id
     settings.CLIENT_USER_ID = client.user.id
 
 
@@ -48,8 +52,27 @@ async def on_message(message: Message):
 
     else:
         logger.warning(
-            f"ignoring message from unknown channel type: {type(message.channel)}"
+            f"ignoring message from unknown channel type: {type(message.channel)} --> {message=}"
         )
+
+
+@client.event
+async def on_raw_reaction_add(reaction_event: RawReactionActionEvent):
+    if not reaction_event.member:
+        return
+
+    channel = client.get_channel(reaction_event.channel_id)
+    if not isinstance(channel, (DMChannel, TextChannel)):
+        logger.warning(
+            f"ignoring reaction event from unknown channel type: {type(channel)}"
+        )
+        return
+
+    message = await channel.fetch_message(reaction_event.message_id)
+    set_log_contextvars(message)
+
+    logger.info(f"{reaction_event.emoji=} added to message")
+    await handle_reaction(message, reaction_event)
 
 
 client.run(settings.DISCORD_BOT_TOKEN.get_secret_value())
