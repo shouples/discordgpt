@@ -15,6 +15,7 @@ def set_log_contextvars(message: Message) -> None:
     structlog.contextvars.bind_contextvars(
         author=message.author.name,
         channel_type=type(message.channel).__name__,
+        message_url=message.jump_url,
     )
     if server_name := getattr(message.guild, "name", None):
         structlog.contextvars.bind_contextvars(server=server_name)
@@ -69,8 +70,11 @@ async def on_raw_reaction_add(reaction_event: RawReactionActionEvent):
         return
 
     message = await channel.fetch_message(reaction_event.message_id)
-    set_log_contextvars(message)
+    if not message.author == client.user:
+        # we get reaction add events for all messages, not just ones applied to our bot's messages
+        return
 
+    set_log_contextvars(message)
     logger.info(f"{reaction_event.emoji=} added to message")
     await handle_reaction(message, reaction_event)
 
