@@ -33,8 +33,8 @@ class Settings(BaseSettings):
     # comma-separated list of usernames to ignore messages from
     IGNORE_SENDER_NAMES: str | list[str] = ""
 
-    # comma-separated list of usernames to ignore messages from
-    IGNORE_SENDER_NAMES: str | list[str] = ""
+    POSITIVE_FEEDBACK_EMOJIS: list[str] = ["👍", "❤️", "😂", "💯"]
+    NEGATIVE_FEEDBACK_EMOJIS: list[str] = ["👎", "😢", "😑", "😡"]
 
     model_config = SettingsConfigDict(
         env_file=".env",
