@@ -75,7 +75,7 @@ async def on_raw_reaction_add(reaction_event: RawReactionActionEvent):
         return
 
     set_log_contextvars(message)
-    logger.info(f"{reaction_event.emoji=} added to message")
+    logger.debug("received emoji for message", emoji=reaction_event.emoji)
     await handle_reaction(message, reaction_event)
 
 
