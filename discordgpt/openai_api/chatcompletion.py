@@ -196,7 +196,9 @@ async def get_image_attachment_context(message: Message) -> list[dict[str, str]]
         attached_images.append(
             {
                 "type": "image_url",
-                "image_url": image_url,
+                "image_url": {
+                    "url": image_url,
+                }
             }
         )
 
