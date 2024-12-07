@@ -79,7 +79,7 @@ async def send_channel_message_to(message: Message) -> None:
 
     Optionally add a reaction to the message first.
     """
-    await generate_ai_reaction(message)
+    await maybe_add_reaction(message)
 
     async with message.channel.typing():
         response, generated_image_url = await generate_ai_text_response(message)
@@ -96,5 +96,12 @@ async def send_channel_message_to(message: Message) -> None:
 
 
 async def maybe_add_reaction(message: Message):
-    if random.random() < settings.RANDOM_REACTION_CHANCE:
+    chance = random.random()
+    adding_reaction = chance < settings.RANDOM_REACTION_CHANCE
+    logger.debug(
+        f"react to message from {message.author.name}? {adding_reaction}",
+        chance=chance,
+        settings_chance=settings.RANDOM_REACTION_CHANCE
+    )
+    if adding_reaction:
         await generate_ai_reaction(message)
