@@ -32,14 +32,14 @@ MODEL_FUNCTIONS = [
                 "properties": {
                     "emojis": {
                         "type": "array",
-                        "description": "The emoji or name(s) of a server reaction (if available) to use when generating the reaction.",
+                        "description": "The emoji(s) or name(s) of a server reaction(s) (if available) to use when generating the reaction(s).",
                         "items": {
                             "type": "string",
                         },
                     },
                     "reasoning": {
                         "type": "string",
-                        "description": "Reasoning or justification for the chosen reaction.",
+                        "description": "Reasoning or justification for the chosen reaction(s).",
                     },
                 },
                 "required": ["emojis", "reasoning"],
