@@ -1,4 +1,5 @@
 import random
+from dataclasses import dataclass
 
 import structlog
 from discord import Message, TextChannel
@@ -19,40 +20,56 @@ logger = structlog.get_logger()
 settings = get_settings()
 
 
-def early_exit_check(message: Message) -> bool:
+@dataclass
+class EarlyExitResult:
+    should_exit: bool
+    reason: str
+
+
+def early_exit_check(message: Message) -> EarlyExitResult:
     """Check if we should ignore this message and exit early without any additional processing or
     response generation.
     """
     # ignore messages from certain users (or other bots)
     if message.author.name in settings.IGNORE_SENDER_NAMES:
         logger.info(f"(ignoring message from {message.author.name})")
-        return True
+        return EarlyExitResult(should_exit=True, reason="ignored user")
 
     if message.guild is None:
         # this should never happen for a text channel
         logger.warning("ignoring message in an unknown server")
-        return True
+        return EarlyExitResult(should_exit=True, reason="unknown server")
 
     # make sure the bot has permissions to send messages in this channel
     if (guild_member := message.guild.get_member(client.user.id)) is None:  # type: ignore
         logger.error(f"couldn't get server user for {client.user}")
-        return True
+        return EarlyExitResult(
+            should_exit=True,
+            reason="can't get server user for bot to check permissions",
+        )
+
     bot_permissions = message.channel.permissions_for(guild_member)
     if not bot_permissions.send_messages:
-        return True
+        return EarlyExitResult(
+            should_exit=True, reason="no send_messages permission for this channel"
+        )
 
-    return False
+    return EarlyExitResult(should_exit=False, reason="")
 
 
 async def handle_text_channel_message(message: Message):
     """Handle a message sent in a TextChannel."""
     channel: TextChannel = message.channel  # type: ignore
 
+    check: EarlyExitResult = early_exit_check(message)
     # TESTING
-    logger.info(f"@{message.author.name}: {message.content}")
+    logger.info(
+        f"@{message.author.name}: {message.content}",
+        early_exit_check=check,
+    )
 
     # checks to make sure we can/should even send a reply
-    if early_exit_check(message):
+    if check.should_exit:
         await maybe_add_reaction(message)
         return
 
@@ -101,7 +118,7 @@ async def maybe_add_reaction(message: Message):
     logger.debug(
         f"react to message from {message.author.name}? {adding_reaction}",
         chance=chance,
-        settings_chance=settings.RANDOM_REACTION_CHANCE
+        settings_chance=settings.RANDOM_REACTION_CHANCE,
     )
     if adding_reaction:
         await generate_ai_reaction(message)
