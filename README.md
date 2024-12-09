@@ -7,7 +7,7 @@ This is mainly used for toying around with a bot user in a single server. I have
 - Create (or use an existing) [OpenAI API key](https://platform.openai.com/account/api-keys)
 - Configure `.env` locally ([example](https://github.com/shouples/discordgpt/blob/main/.env.example))
 - Adjust `initial_prompt.md` as needed ([example](https://github.com/shouples/discordgpt/blob/main/initial_prompt.md))
-- `poetry run python ./discordgpt/app.py`
+- `poetry run python ./src/app.py`
 
 # TODO items
 - [ ] switch from ChatCompletion to the Assistants API; each server in its own thread with `channel:username` as the message `name` values
