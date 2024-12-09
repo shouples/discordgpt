@@ -1,7 +1,7 @@
 import structlog
 from discord import Message, RawReactionActionEvent
 
-from discordgpt.settings import get_settings
+from src.settings import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()

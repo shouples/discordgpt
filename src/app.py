@@ -1,11 +1,11 @@
 import structlog
 from discord import DMChannel, Message, RawReactionActionEvent, TextChannel
 
-from discordgpt.client import client
-from discordgpt.feedback import handle_reaction
-from discordgpt.messaging.direct_message_channel import handle_direct_message
-from discordgpt.messaging.text_channel import handle_text_channel_message
-from discordgpt.settings import get_settings
+from src.client import client
+from src.feedback import handle_reaction
+from src.messaging.direct_message_channel import handle_direct_message
+from src.messaging.text_channel import handle_text_channel_message
+from src.settings import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()

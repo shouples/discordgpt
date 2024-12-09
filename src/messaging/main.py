@@ -6,8 +6,8 @@ import structlog
 from discord import File, Message
 from discord.errors import Forbidden
 
-from discordgpt.client import client
-from discordgpt.settings import get_settings
+from src.client import client
+from src.settings import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()

@@ -4,17 +4,13 @@ from dataclasses import dataclass
 import structlog
 from discord import Message, TextChannel
 
-from discordgpt.client import client
-from discordgpt.messaging.main import (
-    is_mentioned,
-    is_reply_to_my_message,
-    try_to_send_message,
-)
-from discordgpt.openai_api.chatcompletion import (
+from src.client import client
+from src.messaging.main import is_mentioned, is_reply_to_my_message, try_to_send_message
+from src.openai_api.chatcompletion import (
     generate_ai_reaction,
     generate_ai_text_response,
 )
-from discordgpt.settings import get_settings
+from src.settings import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()

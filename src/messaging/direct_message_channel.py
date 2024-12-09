@@ -3,12 +3,12 @@ import random
 import structlog
 from discord import DMChannel, Message
 
-from discordgpt.messaging.main import try_to_send_message
-from discordgpt.openai_api.chatcompletion import (
+from src.messaging.main import try_to_send_message
+from src.openai_api.chatcompletion import (
     generate_ai_reaction,
     generate_ai_text_response,
 )
-from discordgpt.settings import get_settings
+from src.settings import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()

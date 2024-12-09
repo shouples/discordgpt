@@ -8,8 +8,8 @@ from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion, ChatCompletionMessage
 from rich import print as rprint
 
-from discordgpt.openai_api.function_calls import MODEL_FUNCTIONS
-from discordgpt.settings import get_settings
+from src.openai_api.function_calls import MODEL_FUNCTIONS
+from src.settings import get_settings
 
 logger = structlog.get_logger()
 settings = get_settings()
@@ -198,7 +198,7 @@ async def get_image_attachment_context(message: Message) -> list[dict[str, str]]
                 "type": "image_url",
                 "image_url": {
                     "url": image_url,
-                }
+                },
             }
         )
 
